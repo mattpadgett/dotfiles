@@ -31,9 +31,18 @@
     src: "themer_config.j2"
     force: true
 
+- name: create polybar config directory
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.config/polybar"
+    state: directory
+
 - name: copy polybar configs
   ansible.builtin.shell:
     cmd: "cp -r {{ ansible_user_dir }}/env_setup/i3wm-themer/scripts/* /home/$USER/.config/polybar/"
+
+- name: install defaults
+  ansible.builtin.shell:
+    cmd: "python3 {{ ansible_user_dir }}/env_setup/i3wm-themer/i3wm-themer.py --config {{ ansible_user_dir }}/env_setup/i3wm-themer/config.yaml --install {{ ansible_user_dir }}/env_setup/i3wm-themer/defaults/"
 
 - name: apply theme
   ansible.builtin.shell:

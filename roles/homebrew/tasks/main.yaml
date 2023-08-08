@@ -16,6 +16,7 @@
 - name: add to path
   ansible.builtin.shell: |
     (echo; echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"') >> $HOME/.bashrc
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 
 
