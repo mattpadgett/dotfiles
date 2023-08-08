@@ -1,0 +1,18 @@
+default_roles:
+# - git
+# - i3
+# - pyenv
+# - lazygit
+# - go
+# - dotnet
+# - homebrew
+  - kubectl
+# - k9s
+# - neovim
+# - nnn
+# - bat
+# - kitty
+# - zsh
+# - tmux
+# - oh-my-zsh
+# - oh-my-tmux

@@ -1,0 +1,21 @@
+---
+- name: verify download destination exists
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/env_setup/homebrew"
+    state: directory
+
+- name: download install script
+  ansible.builtin.get_url:
+    url: "https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
+    dest: "{{ ansible_user_dir }}/env_setup/homebrew/install.sh"
+    mode: "0700"
+
+- name: install
+  ansible.builtin.shell: "NONINTERACTIVE=1 {{ ansible_user_dir }}/env_setup/homebrew/install.sh"
+
+- name: add to path
+  ansible.builtin.shell: |
+    (echo; echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"') >> $HOME/.bashrc
+
+
+

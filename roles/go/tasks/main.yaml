@@ -1,0 +1,31 @@
+---
+- name: verify download destination exists
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/env_setup/go"
+    state: directory
+
+- name: download go
+  ansible.builtin.get_url:
+    url: "https://go.dev/dl/go1.20.7.linux-amd64.tar.gz"
+    dest: "{{ ansible_user_dir }}/env_setup/go/go.tar.gz"
+
+- name: unzip
+  ansible.builtin.unarchive:
+    src: "{{ ansible_user_dir }}/env_setup/go/go.tar.gz"
+    dest: "/usr/local"
+  become: true
+
+- name: add vars to .bash_rc
+  ansible.builtin.blockinfile:
+    path: "$HOME/.bashrc"
+    block: |
+      export PATH="$PATH:/usr/local/go/bin"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - go"
+    insertbefore: BOF
+    create: true
+
+- name: config folder
+  ansible.builtin.file:
+    mode: "0755"
+    path: "{{ ansible_user_dir }}/dev/language/go"
+    state: directory

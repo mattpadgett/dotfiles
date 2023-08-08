@@ -1,0 +1,27 @@
+#!/bin/bash
+set -e
+
+SSH_DIR="$HOME/.ssh"
+CONFIG_DIR="$HOME/.config/dotfiles"
+DOTFILES_DIR="$HOME/.dotfiles"
+
+if ! [ -x "$(command -v ansible)" ]; then
+  sudo apt update
+  sudo apt install ansible --yes
+fi
+
+if ! [[ -f "$SSH_DIR/id_rsa" ]]; then
+  mkdir -p "$SSH_DIR"
+
+  chmod 700 "$SSH_DIR"
+
+  ssh-keygen -b 4096 -t rsa -f "$SSH_DIR/id_rsa" -N "" -C "$USER@$HOSTNAME"
+
+  cat "$SSH_DIR/id_rsa.pub" >> "$SSH_DIR/authorized_keys"
+
+  chmod 600 "$SSH_DIR/authorized_keys"
+fi
+
+ansible-galaxy install -r "$DOTFILES_DIR/requirements.yaml"
+
+ansible-playbook --diff --extra-vars "@$CONFIG_DIR/values.yaml" --vault-password-file "$CONFIG_DIR/vault-password.txt" "$DOTFILES_DIR/main.yaml" "$@"

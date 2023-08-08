@@ -1,0 +1,26 @@
+---
+- name: install
+  ansible.builtin.package:
+    name:
+      - git
+    state: latest
+  become: true
+
+- name: set user.name
+  community.general.git_config:
+    name: user.name
+    scope: global
+    value: "{{ git.name }}"
+
+- name: set user.email
+  community.general.git_config:
+    name: user.email
+    scope: global
+    value: "{{ git.email }}"
+  no_log: true
+
+- name: set init.defaultBranch
+  community.general.git_config:
+    name: init.defaultBranch
+    scope: global
+    value: main

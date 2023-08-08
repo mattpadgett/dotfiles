@@ -1,0 +1,40 @@
+---
+- name: install
+  ansible.builtin.package:
+    name:
+      - i3
+    state: latest
+  become: true
+
+- name: clone themer
+  ansible.builtin.git:
+    clone: true
+    depth: 1
+    dest: "{{ ansible_user_dir }}/env_setup/i3wm-themer"
+    repo: https://github.com/unix121/i3wm-themer
+    update: true
+    version: main
+
+- name: pip install
+  ansible.builtin.shell:
+    cmd: "pip install pyyaml"
+  become: true
+
+- name: install deps
+  ansible.builtin.shell:
+    cmd: "echo 'Y' | {{ ansible_user_dir }}/env_setup/i3wm-themer/install_ubuntu.sh"
+  become: true
+
+- name: copy tool config
+  ansible.builtin.template:
+    dest: "{{ ansible_user_dir }}/env_setup/i3wm-themer/config.yaml"
+    src: "themer_config.j2"
+    force: true
+
+- name: copy polybar configs
+  ansible.builtin.shell:
+    cmd: "cp -r {{ ansible_user_dir }}/env_setup/i3wm-themer/scripts/* /home/$USER/.config/polybar/"
+
+- name: apply theme
+  ansible.builtin.shell:
+    cmd: "python3 {{ ansible_user_dir }}/env_setup/i3wm-themer/i3wm-themer.py --config {{ ansible_user_dir }}/env_setup/i3wm-themer/config.yaml --load {{ ansible_user_dir }}/env_setup/i3wm-themer/themes/013.json"
