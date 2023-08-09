@@ -1,0 +1,22 @@
+---
+- name: create download dir
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/env_setup/jb-mono"
+    state: directory
+
+- name: download
+  ansible.builtin.get_url:
+    url: "https://download.jetbrains.com/fonts/JetBrainsMono-2.304.zip"
+    dest: "{{ ansible_user_dir }}/env_setup/jb-mono/jb-mono.zip"
+    mode: "0700"
+
+- name: unzip
+  ansible.builtin.unarchive:
+    src: "{{ ansible_user_dir }}/env_setup/jb-mono/jb-mono.zip"
+    dest: "/usr/share/fonts"
+  become: true
+
+- name: install font
+  ansible.builtin.shell:
+    cmd: "fc-cache -f -v"
+  become: true

@@ -57,3 +57,5 @@ if [ -f "$HOME/.zsh_private" ]; then . "$HOME/.zsh_private"; fi
 
 # HOMEBREW
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
+if [ "$TMUX" = "" ]; then tmux; fi

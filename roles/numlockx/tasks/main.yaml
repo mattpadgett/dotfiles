@@ -1,0 +1,11 @@
+---
+- name: install
+  ansible.builtin.package:
+    name:
+      - numlockx
+  become: true
+
+- name: enable
+  ansible.builtin.shell:
+    cmd: numlockx on
+  become: true

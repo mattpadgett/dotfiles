@@ -15,6 +15,12 @@
     update: true
     version: main
 
+- name: copy i3 config default
+  ansible.builtin.template:
+    dest: "{{ ansible_user_dir }}/env_setp/i3wm-themer/defaults/i3.template"
+    src: "i3_config.j2"
+    force: true
+
 - name: pip install
   ansible.builtin.shell:
     cmd: "pip install pyyaml"

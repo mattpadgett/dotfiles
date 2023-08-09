@@ -1,0 +1,25 @@
+---
+- name: install deps
+  ansible.builtin.package:
+    name:
+      - dconf-cli
+      - uuid-runtime
+  become: true
+
+- name: verify clone location exists
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/env_setup/gogh"
+    state: directory
+
+- name: clone
+  ansible.builtin.git:
+    clone: true
+    depth: 1
+    dest: "{{ ansible_user_dir }}/env_setup/gogh"
+    repo: https://github.com/Gogh-Co/Gogh.git
+    update: true
+    version: master
+
+- name: configure
+  ansible.builtin.shell:
+    cmd: "TERMINAL=gnome-terminal {{ ansible_user_dir }}/env_setup/gogh/installs/cobalt-2.sh"

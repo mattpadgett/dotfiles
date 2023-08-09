@@ -1,0 +1,14 @@
+---
+- name: install
+  community.general.snap:
+    name: "{{ jetbrains_item }}"
+    classic: true
+  become: true
+  loop_control:
+    loop_var: jetbrains_item
+  with_items:
+    - datagrip
+    - goland
+    - pycharm-professional
+    - rider
+    - webstorm
