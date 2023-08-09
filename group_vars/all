@@ -19,5 +19,4 @@ default_roles:
   - tmux
   - oh-my-zsh
   - oh-my-tmux
-  - gogh
 # - jb-ides # broken right now maybe? pycharm pro took forever and still didn't ever finish
