@@ -47,6 +47,11 @@
     path: "{{ ansible_user_dir }}/.config/nitrogen"
     state: directory
 
+- name: create i3 config direcotry
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.config/i3"
+    state: directory
+
 - name: touch i3 config
   ansible.builtin.file:
     path: "{{ ansible_user_dir }}/.config/i3/config"
