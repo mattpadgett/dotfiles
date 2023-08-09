@@ -5,8 +5,8 @@
     classic: true
   become: true
 
-- name: inatall dep
-  ansible.builtin.file:
+- name: install deps
+  ansible.builtin.package:
     name:
       - "fd-find"
       - "ripgrep"
