@@ -1,9 +1,15 @@
 ---
 - name: install
-  ansible.builtin.package:
+  community.general.snap:
+    name: nvim
+    classic: true
+  become: true
+
+- name: inatall dep
+  ansible.builtin.file:
     name:
-      - neovim
-    state: latest
+      - "fd-find"
+      - "ripgrep"
   become: true
 
 - name: config folder
