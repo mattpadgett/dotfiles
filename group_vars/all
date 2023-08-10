@@ -11,7 +11,6 @@ default_roles:
   - homebrew
   - kubectl
   - k9s
-  - neovim
   - nnn
   - bat
   - kitty
@@ -19,4 +18,9 @@ default_roles:
   - tmux
   - oh-my-zsh
   - oh-my-tmux
+  - nodejs
+  - lazynpm
+  - httpie
+  - neovim
+
 # - jb-ides # broken right now maybe? pycharm pro took forever and still didn't ever finish
