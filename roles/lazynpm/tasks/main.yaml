@@ -1,4 +1,0 @@
----
-- name: install
-  ansible.builtin.shell:
-    cmd: eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && brew install jesseduffield/lazynpm/lazynpm
