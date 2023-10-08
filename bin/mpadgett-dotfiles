@@ -59,4 +59,5 @@ fi
 
 cd "$DOTFILES_DIR"
 
+ansible-galaxy install -r requirements.yaml
 ansible-playbook --diff --extra-vars "@$DOTFILES_DIR/config.yaml" --ask-vault-password "$DOTFILES_DIR/main.yaml" "$@"
