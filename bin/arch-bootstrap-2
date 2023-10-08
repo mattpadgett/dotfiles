@@ -1,33 +1,6 @@
 #!/bin/bash
 set -e
 
-timedatectl set-timezone America/Chicago
-
-DEVICE=/dev/$(ls /dev | grep ^sd[a-z]$)
-
-parted -s $DEVICE mklabel gpt
-parted -s $DEVICE mkpart efi fat32 1MiB 2GiB
-parted -s $DEVICE set 1 esp on
-parted -s $DEVICE mkpart swap linux-swap 2GiB 10GiB
-parted -s $DEVICE mkpart root ext4 10GiB 40GiB
-parted -s $DEVICE mkpart home ext4 40GiB 100%
-
-mkfs.fat -F 32 ${DEVICE}1
-mkswap ${DEVICE}2
-mkfs.ext4 ${DEVICE}3
-mkfs.ext4 ${DEVICE}4
-
-mount --mkdir ${DEVICE}1 /mnt/boot
-swapon ${DEVICE}2
-mount --mkdir ${DEVICE}3 /mnt
-mount --mkdir ${DEVICE}4 /mnt/home
-
-pacstrap -K /mnt base linux linux-firmware 
- 
-genfstab -L /mnt >> /mnt/etc/fstab
-
-arch-chroot /mnt
-
 DEVICE=/dev/$(ls /dev | grep ^sd[a-z]$)
 
 ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime
@@ -51,7 +24,3 @@ cp /usr/share/locale/en\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/en.mo
 grub-mkconfig -o /boot/grub/grub.cfg
 
 passwd
-
-exit
-umount -a
-reboot
