@@ -62,5 +62,5 @@ else
 fi
 
 if [[ -f "/usr/local/bin/mpadgett-dotfiles" ]]; then
-	sudo rm /usr/local/bin/mpadgett-dotfiles
+  sudo rm /usr/local/bin/mpadgett-dotfiles
 fi
