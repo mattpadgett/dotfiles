@@ -3,7 +3,6 @@ set -e
 
 DOTFILES_REPO="https://github.com/mattpadgett/dotfiles.git"
 DOTFILES_DIR="$HOME/.dotfiles"
-CONFIG_DIR="$HOME/.config/dotfiles"
 
 if [[ $EUID -eq 0 ]]; then
   echo -n "set username: "
@@ -50,10 +49,6 @@ fi
 
 if ! [ -x "$(command -v ansible)" ]; then
   sudo pacman -S ansible --noconfirm
-fi
-
-if ! [[ -d "$CONFIG_DIR" ]]; then
-  mkdir -p "$CONFIG_DIR"
 fi
 
 if ! [[ -d "$DOTFILES_DIR" ]]; then
