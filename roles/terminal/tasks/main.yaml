@@ -1,0 +1,120 @@
+---
+- name: install
+  ansible.builtin.package:
+    name:
+      - tmux
+      - zsh
+      - kitty
+    state: latest
+  become: true
+
+- name: set default shell
+  ansible.builtin.user:
+    name: "{{ ansible_user_id }}"
+    shell: "/usr/bin/zsh"
+  become: true
+
+- name: set public zsh
+  ansible.builtin.template:
+    dest: "{{ ansible_user_dir }}/.zsh_public"
+    src: ".zsh_public.j2"
+
+- name: set private zsh
+  ansible.builtin.template:
+    dest: "{{ ansible_user_dir }}/.zsh_private"
+    src: ".zsh_private.j2"
+  no_log: true
+
+### oh my zsh ###
+- name: check for existing install
+  ansible.builtin.stat:
+    path: "{{ ansible_user_dir }}/.oh-my-zsh"
+  register: install
+
+- name: download oh-my-zsh
+  ansible.builtin.get_url:
+    dest: "/tmp/zsh-install.sh"
+    mode: "755"
+    url: "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
+  when: not install.stat.exists
+
+- name: execute zsh-install.sh
+  ansible.builtin.shell: 
+    cmd: "/tmp/zsh-install.sh"
+  when: not install.stat.exists
+
+- name: remove zsh-install.sh
+  ansible.builtin.file:
+    path: "/tmp/zsh-install.sh"
+    state: absent
+
+- name: copy .zshrc
+  ansible.builtin.template:
+    dest: "{{ ansible_user_dir }}/.zshrc"
+    src: ".zshrc.j2"
+
+- name: zsh-autosuggestions
+  ansible.builtin.git:
+    clone: true
+    depth: 1
+    dest: "{{ ansible_user_dir }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+    repo: "https://github.com/zsh-users/zsh-autosuggestions"
+    update: true
+
+- name: zsh-completions
+  ansible.builtin.git:
+    clone: true
+    depth: 1
+    dest: "{{ ansible_user_dir }}/.oh-my-zsh/custom/plugins/zsh-completions"
+    repo: "https://github.com/zsh-users/zsh-completions"
+    update: true
+
+- name: zsh-syntax-highlighting
+  ansible.builtin.git:
+    clone: true
+    depth: 1
+    dest: "{{ ansible_user_dir }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+    repo: "https://github.com/zsh-users/zsh-syntax-highlighting"
+    update: true
+
+- name: zsh-z
+  ansible.builtin.git:
+    clone: true
+    depth: 1
+    dest: "{{ ansible_user_dir }}/.oh-my-zsh/custom/plugins/zsh-z"
+    repo: "https://github.com/agkozak/zsh-z"
+    single_branch: true
+
+### oh my tmux ###
+- name: clone
+  ansible.builtin.git:
+    clone: yes
+    depth: 1
+    dest: "{{ ansible_user_dir }}/.tmux"
+    repo: "https://github.com/gpakosz/.tmux.git"
+    update: yes
+    version: master
+  register: clone
+
+- name: link .tmux.conf
+  ansible.builtin.file:
+    src: "{{ ansible_user_dir }}/.tmux/.tmux.conf"
+    dest: "{{ ansible_user_dir }}/.tmux.conf"
+    state: link
+
+- name: copy .tmux.conf.local
+  ansible.builtin.template:
+    dest: "{{ ansible_user_dir }}/.tmux.conf.local"
+    src: ".tmux.conf.local.j2"
+
+# kitty
+- name: config directory
+  ansible.builtin.file:
+    mode: "755"
+    path: "{{ ansible_user_dir }}/.config/kitty"
+    state: directory
+
+- name: copy configuration
+  ansible.builtin.template:
+    dest: "{{ ansible_user_dir }}/.config/kitty/kitty.conf"
+    src: "kitty.conf.j2"

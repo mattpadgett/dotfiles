@@ -1,0 +1,26 @@
+---
+- name: install
+  ansible.builtin.package:
+    name:
+      - openssh
+    state: latest
+  become: true
+
+- name: copy ssh private key
+  ansible.builtin.copy:
+    dest: "{{ ansible_user_dir }}/.ssh/id_ed25519"
+    content: "{{ ssh_key_private }}"
+    owner: "{{ ansible_user_id }}"
+    mode: "600"
+
+- name: copy ssh public key
+  ansible.builtin.copy:
+    dest: "{{ ansible_user_dir }}/.ssh/authorized_keys"
+    content: "{{ ssh_key_public }}"
+    owner: "{{ ansible_user_id }}"
+
+- name: add to ssh-agent
+  ansible.builtin.shell:
+    cmd: |
+      eval "$(ssh-agent -s)"
+      ssh-add "{{ ansible_user_dir }}/.ssh/id_ed25519"

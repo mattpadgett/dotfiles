@@ -1,0 +1,19 @@
+---
+- name: copy numlock script
+  ansible.builtin.copy:
+    dest: "/usr/local/bin/numlock"
+    src: "numlock"
+    mode: "755"
+  become: true
+
+- name: copy numlock systemd service
+  ansible.builtin.copy:
+    dest: "/etc/systemd/system/numlock.service"
+    src: "numlock.service"
+  become: true
+
+- name: enable service
+  ansible.builtin.systemd:
+    name: numlock
+    enabled: true
+  become: true

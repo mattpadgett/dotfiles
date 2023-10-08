@@ -1,0 +1,14 @@
+---
+- name: install kubectl
+  kewlfft.aur.aur:
+    use: yay
+    state: latest
+    name:
+      - kubectl
+
+- name: install k9s
+  ansible.builtin.package:
+    name:
+      - k9s
+    state: latest
+  become: true

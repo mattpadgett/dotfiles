@@ -1,0 +1,67 @@
+#!/bin/bash
+set -e
+
+DOTFILES_REPO="https://github.com/mattpadgett/dotfiles.git"
+DOTFILES_DIR="$HOME/.dotfiles"
+CONFIG_DIR="$HOME/.config/dotfiles"
+
+if [[ $EUID -eq 0 ]]; then
+  echo -n "set username: "
+  read MY_USERNAME
+fi
+
+if [[ $(systemctl is-enabled dhcpcd ) == disabled ]]; then
+	systemctl enable --now dhcpcd
+fi
+
+if [[ $(systemctl is-enabled vboxservice ) == disabled ]]; then
+	systemctl enable --now vboxservice
+fi
+
+if ! [ -x "$(command -v sudo)" ]; then
+  pacman -Sy sudo --noconfirm
+
+  groupadd -f sudo
+  echo -e "root  ALL=(ALL:ALL) ALL\n%sudo  ALL=(ALL:ALL) ALL\n\n@includedir /etc/sudoers.d" > /etc/sudoers
+fi
+
+if [[ -z "$(getent passwd ${MY_USERNAME})" ]]; then  
+  useradd -m -s /bin/bash "${MY_USERNAME}"
+	
+  echo "setting password for ${MY_USERNAME}:"
+  passwd "${MY_USERNAME}"
+
+  usermod -a -G sudo "${MY_USERNAME}"
+  usermod -a -G vboxsf "${MY_USERNAME}"
+  usermod -a -G adm "${MY_USERNAME}"
+fi
+
+if [[ $EUID -ne $(id -u $MY_USERNAME) ]]; then
+  echo "login as ${MY_USERNAME} before continuing..."
+  exit
+fi
+
+# running as user instead of root now
+sudo pacman -Sy
+
+if ! [ -x "$(command -v git)" ]; then
+  sudo pacman -S git --noconfirm
+fi
+
+if ! [ -x "$(command -v ansible)" ]; then
+  sudo pacman -S ansible --noconfirm
+fi
+
+if ! [[ -d "$CONFIG_DIR" ]]; then
+  mkdir -p "$CONFIG_DIR"
+fi
+
+if ! [[ -d "$DOTFILES_DIR" ]]; then
+  git clone "$DOTFILES_REPO" "$DOTFILES_DIR"
+else
+  git -C "$DOTFILES_DIR" pull
+fi
+
+cd "$DOTFILES_DIR"
+
+ansible-playbook --diff --extra-vars "@$DOTFILES_DIR/config.yaml" --ask-vault-password "$DOTFILES_DIR/main.yaml" "$@"

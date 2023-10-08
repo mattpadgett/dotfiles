@@ -1,0 +1,31 @@
+- name: repo directory
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/dev/repo"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+    mode: "755"
+    state: directory
+
+- name: go directory
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/dev/lang/go"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+    mode: "755"
+    state: directory
+
+- name: setup directory
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/setup"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+    mode: "755"
+    state: directory
+
+- name: ssh directory
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.ssh"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+    mode: "700"
+    state: directory

@@ -1,0 +1,17 @@
+default_roles:
+  - file-system
+  - basic-packages
+  - numlock-enable
+  - git
+  - ssh
+  - yay
+  - fonts
+  - pyenv
+  - lazygit
+  - golang
+  - nodejs
+  - kubernetes-tools
+  - nnn
+  - terminal
+  - neovim
+  - i3

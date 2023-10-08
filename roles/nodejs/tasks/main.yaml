@@ -1,0 +1,7 @@
+---
+- name: install
+  ansible.builtin.package:
+    name:
+      - nodejs
+      - npm
+  become: true

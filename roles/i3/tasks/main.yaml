@@ -1,0 +1,61 @@
+---
+- name: install
+  ansible.builtin.package:
+    name:
+      - i3
+      - xorg
+      - xorg-xinit
+      - nitrogen
+      - rofi
+      - ttf-font-awesome
+      - adobe-source-code-pro-fonts
+      - binutils
+      - pkg-config
+      - fakeroot
+      - ttf-nerd-fonts-symbols
+      - picom
+    state: latest
+  become: true
+
+# xorg
+- name: copy .xinitrc
+  ansible.builtin.template:
+    dest: "{{ ansible_user_dir }}/.xinitrc"
+    src: ".xinitrc.j2"
+
+# config directories
+- name: create config directory
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.config"
+    state: directory
+
+- name: create nitrogen config directory
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.config/nitrogen"
+    state: directory
+
+- name: create i3 config directory
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.config/i3"
+    state: directory
+
+# copy files
+- name: copy xresources config
+  ansible.builtin.template:
+    dest: "{{ ansible_user_dir }}/.Xresources"
+    src: ".Xresources.j2"
+
+- name: copy i3 config
+  ansible.builtin.template:
+    dest: "{{ ansible_user_dir }}/.config/i3/config"
+    src: "i3.config.j2"
+
+- name: copy nitrogen config
+  ansible.builtin.template:
+    dest: "{{ ansible_user_dir }}/.config/nitrogen/bg-saved.cfg"
+    src: "nitrogen.bg-saved.cfg.j2"
+
+- name: copy background image
+  ansible.builtin.copy:
+    dest: "{{ ansible_user_dir }}/.config/nitrogen/valley.jpg"
+    src: "valley.jpg"

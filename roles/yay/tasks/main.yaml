@@ -1,0 +1,13 @@
+- name: clone
+  ansible.builtin.git:
+    clone: true
+    depth: 1
+    dest: "{{ ansible_user_dir }}/setup/yay"
+    repo: https://aur.archlinux.org/yay.git
+    update: true
+
+- name: build
+  ansible.builtin.command:
+    chdir: "{{ ansible_user_dir }}/setup/yay"
+    cmd: "makepkg -sfi --noconfirm"
+    creates: /usr/bin/yay

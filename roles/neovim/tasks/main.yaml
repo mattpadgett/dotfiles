@@ -1,0 +1,47 @@
+---
+- name: install
+  ansible.builtin.package:
+    name:
+      - neovim
+      - fd
+      - ripgrep
+  become: true
+
+- name: stat pyenv
+  ansible.builtin.stat:
+    path: "{{ ansible_user_dir }}/.pyenv/versions/py3nvim"
+  register: "pyenv_exists"
+
+- name: pyenv
+  ansible.builtin.shell:
+    cmd: |
+      pyenv install 3.10.12
+      pyenv virtualenv 3.10.12 py3nvim
+      ~/.pyenv/versions/py3nvim/bin/python -m pip install pynvim
+  when: not pyenv_exists.stat.exists
+
+- name: npm
+  ansible.builtin.shell:
+    cmd: npm install -g neovim
+  become: true
+
+- name: config directory
+  ansible.builtin.file:
+    mode: "755"
+    path: "{{ ansible_user_dir }}/.config/nvim"
+    state: directory
+
+- name: copy init.lua
+  ansible.builtin.copy:
+    dest: "{{ ansible_user_dir }}/.config/nvim/init.lua"
+    src: "init.lua"
+
+- name: copy modules
+  ansible.builtin.copy:
+    dest: "{{ ansible_user_dir }}/.config/nvim/lua"
+    src: "lua/"
+
+- name: copy plugins
+  ansible.builtin.copy:
+    dest: "{{ ansible_user_dir }}/.config/nvim/plugin"
+    src: "plugin/"

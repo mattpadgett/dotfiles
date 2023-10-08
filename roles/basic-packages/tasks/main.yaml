@@ -1,0 +1,10 @@
+- name: install
+  ansible.builtin.package:
+    name:
+      - git
+      - base-devel
+      - make
+      - gcc
+      - less
+    state: latest
+  become: true
