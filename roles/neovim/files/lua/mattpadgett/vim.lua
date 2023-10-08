@@ -40,7 +40,7 @@ local function set_vim_wo()
 end
 
 local function set_color()
-  vim.cmd.colorscheme "catppuccin-macchiato"
+  pcall(vim.cmd.colorscheme, 'catppuccin-macchiato')
 end
 
 local function init()
