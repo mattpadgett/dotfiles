@@ -51,4 +51,16 @@ fi
 
 cd "$DOTFILES_DIR"
 
-exec "bin/run-ansible"
+ansible-galaxy install -r requirements.yaml
+
+if [[ -f "$DOTFILES_DIR/vault-password.txt" ]]; then
+  chmod 600 "$DOTFILES_DIR/vault-password.txt"
+  ansible-playbook --diff --extra-vars "@$DOTFILES_DIR/config.yaml" --vault-password-file "$DOTFILES_DIR/vault-password.txt" "$DOTFILES_DIR/main.yaml" "$@"
+else
+  echo "vault password missing..."
+  exit
+fi
+
+if [[ -f "/usr/local/bin/mpadgett-dotfiles" ]]; then
+	sudo rm /usr/local/bin/mpadgett-dotfiles
+fi
