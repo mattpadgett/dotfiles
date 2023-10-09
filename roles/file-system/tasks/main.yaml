@@ -6,6 +6,22 @@
     mode: "755"
     state: directory
 
+- name: github directory
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/dev/repo/github"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+    mode: "755"
+    state: directory
+
+- name: gitlab directory
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/dev/repo/gitlab"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+    mode: "755"
+    state: directory
+
 - name: go directory
   ansible.builtin.file:
     path: "{{ ansible_user_dir }}/dev/lang/go"
