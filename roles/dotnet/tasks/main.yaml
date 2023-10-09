@@ -1,0 +1,7 @@
+---
+- name: install
+  ansible.builtin.package:
+    name:
+      - dotnet-sdk
+    state: latest
+  become: true
