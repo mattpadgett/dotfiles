@@ -1,7 +1,30 @@
 # mpadgett-dotfiles
 
 Semi-automated Arch development environment setup using Ansible.
+---
+## Basics
 
+- Used the 2023.08.01 Arch ISO
+- Running on VirtualBox
+  - Shared Clipboard: Bidirectional
+  - EFI: Enabled
+  - PAE / NX: Enabled
+  - Nested VT-x/AMD-V: Enabled
+  - Nested Paging: Enabled
+  - Video Memory: Max (128 MB)
+  - Graphics Controller: VMSVGA
+  - 3D Acceleration: Disabled
+  - Network: Adapter 1; Bridged Adapter
+  - Shared Folder:
+    - Folder Path: C:\data\vm_shared
+    - Folder Name: vm_shared
+    - Mount Point: /vm_shared
+    - Read Only: Disabled
+    - Auto Mount: Enabled
+    - Make Permanent: Enabled
+- 200 GB VDI Pre-Allocated
+
+## Boot from ISO
 ---
 
 ```bash
