@@ -16,3 +16,4 @@ default_roles:
   - terminal
   - neovim
   - i3
+  - jetbrains-toolbox

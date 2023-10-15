@@ -6,5 +6,6 @@
       - make
       - gcc
       - less
+      - unzip
     state: latest
   become: true

@@ -1,0 +1,16 @@
+---
+- name: download file
+  ansible.builtin.get_url:
+    url: "https://download.jetbrains.com/product?code=TB&latest&distribution=linux"
+    dest: "/tmp/toolbox.tar.gz"
+    mode: "0755"
+  become: true
+
+- name: unpack
+  ansible.builtin.unarchive:
+    src: "/tmp/toolbox.tar.gz"
+    dest: "/opt"
+  become: true
+
+- name: run
+  ansible.builtin.shell: "/opt/jetbrains-toolbox-*/jetbrains-toolbox"
