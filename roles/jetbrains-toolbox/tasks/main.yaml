@@ -1,4 +1,18 @@
 ---
+- name: prerequisites
+  ansible.builtin.package:
+    name:
+      - fuse2
+      - libxi
+      - libxrender
+      - libxtst
+      - mesa-utils
+      - fontconfig
+      - gtk3
+      - dbus
+    state: latest
+  become: true
+
 - name: download file
   ansible.builtin.get_url:
     url: "https://download.jetbrains.com/product?code=TB&latest&distribution=linux"
@@ -6,11 +20,12 @@
     mode: "0755"
   become: true
 
-- name: unpack
-  ansible.builtin.unarchive:
-    src: "/tmp/toolbox.tar.gz"
-    dest: "/opt"
+- name: make directory in opt
+  ansible.builtin.file:
+    path: "/opt/jetbrains-toolbox"
+    state: "directory"
   become: true
 
-- name: run
-  ansible.builtin.shell: "/opt/jetbrains-toolbox-*/jetbrains-toolbox"
+- name: unpack
+  ansible.builtin.shell: "tar -xzf /tmp/toolbox.tar.gz --strip-components=1 -C /opt/jetbrains-toolbox"
+  become: true

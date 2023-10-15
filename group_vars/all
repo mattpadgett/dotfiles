@@ -17,3 +17,4 @@ default_roles:
   - neovim
   - i3
   - jetbrains-toolbox
+  - firefox

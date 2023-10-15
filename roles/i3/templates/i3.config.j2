@@ -19,7 +19,7 @@ bindsym $mod+Return exec kitty
 bindsym $mod+Shift+q kill
 
 # start program launcher
-bindsym $mod+d exec --no-startup-id rofi -show run
+bindsym $mod+d exec --no-startup-id rofi -show drun
 
 # change focus
 bindsym $mod+j focus left
@@ -166,6 +166,9 @@ exec --no-startup-id VBoxClient-all
 
 # floating
 for_window [class="JetBrains Toolbox"] floating enable
+for_window [class="firefox"] floating enable
+for_window [class="jetbrains-toolbox"] floating enable
+for_window [class="jetbrains-goland"] floating enable
 
 # Theme colors
 client.focused #56737a #1e1e20 #56737a #56737a #56737a
