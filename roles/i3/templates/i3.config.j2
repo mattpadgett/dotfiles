@@ -3,13 +3,13 @@ set $mod Mod4
 new_window pixel 1
 new_float normal
 
-hide_edge_borders none
+hide_edge_borders smart
 
 bindsym $mod+u border none
 bindsym $mod+y border pixel 1
 bindsym $mod+n border normal
 
-font xft:URWGothic-Book 11
+font xft:JetBrainsMono 10
 
 floating_modifier $mod
 
@@ -73,13 +73,6 @@ bindsym $mod+Shift+s sticky toggle
 # focus the parent container
 bindsym $mod+a focus parent
 
-# move the currently focused window to the scratchpad
-bindsym $mod+Shift+minus move scratchpad
-
-# Show the next scratchpad window or hide the focused scratchpad window.
-# If there are multiple scratchpad windows, this command cycles through them.
-bindsym $mod+minus scratchpad show
-
 # navigate workspaces next / previous
 bindsym $mod+Ctrl+Right workspace next
 bindsym $mod+Ctrl+Left workspace prev
@@ -90,9 +83,6 @@ set $ws2 2
 set $ws3 3
 set $ws4 4
 set $ws5 5
-set $ws6 6
-set $ws7 7
-set $ws8 8
 
 # switch to workspace
 bindsym $mod+1 workspace $ws1
@@ -100,9 +90,6 @@ bindsym $mod+2 workspace $ws2
 bindsym $mod+3 workspace $ws3
 bindsym $mod+4 workspace $ws4
 bindsym $mod+5 workspace $ws5
-bindsym $mod+6 workspace $ws6
-bindsym $mod+7 workspace $ws7
-bindsym $mod+8 workspace $ws8
 
 # Move focused container to workspace
 bindsym $mod+Ctrl+1 move container to workspace $ws1
@@ -110,9 +97,6 @@ bindsym $mod+Ctrl+2 move container to workspace $ws2
 bindsym $mod+Ctrl+3 move container to workspace $ws3
 bindsym $mod+Ctrl+4 move container to workspace $ws4
 bindsym $mod+Ctrl+5 move container to workspace $ws5
-bindsym $mod+Ctrl+6 move container to workspace $ws6
-bindsym $mod+Ctrl+7 move container to workspace $ws7
-bindsym $mod+Ctrl+8 move container to workspace $ws8
 
 # Move to workspace with focused container
 bindsym $mod+Shift+1 move container to workspace $ws1; workspace $ws1
@@ -120,9 +104,6 @@ bindsym $mod+Shift+2 move container to workspace $ws2; workspace $ws2
 bindsym $mod+Shift+3 move container to workspace $ws3; workspace $ws3
 bindsym $mod+Shift+4 move container to workspace $ws4; workspace $ws4
 bindsym $mod+Shift+5 move container to workspace $ws5; workspace $ws5
-bindsym $mod+Shift+6 move container to workspace $ws6; workspace $ws6
-bindsym $mod+Shift+7 move container to workspace $ws7; workspace $ws7
-bindsym $mod+Shift+8 move container to workspace $ws8; workspace $ws8
 
 # switch to workspace with urgent window automatically
 for_window [urgent=latest] focus
@@ -181,7 +162,10 @@ mode "resize" {
 exec --no-startup-id nitrogen --restore; sleep 1; compton -b
 exec_always --no-startup-id ff-theme-util
 exec_always --no-startup-id fix_xcursor
-exec VBoxClient-all
+exec --no-startup-id VBoxClient-all
+
+# floating
+for_window [class="JetBrains Toolbox"] floating enable
 
 # Theme colors
 client.focused #56737a #1e1e20 #56737a #56737a #56737a
@@ -245,3 +229,24 @@ bindsym XF86AudioMute exec --no-startup-id amixer -q set Master toggle
 # touchpad on and off controller on laptop with Fn+<touchpad control functional key>
 bindsym XF86TouchpadOn exec --no-startup-id synclient Touchpadoff=0
 bindsym XF86TouchpadOff exec --no-startup-id synclient Touchpadoff=1
+
+bar {
+	i3bar_command i3bar --transparency
+	status_command i3status
+	position bottom
+
+	bindsym button4 nop
+	bindsym button5 nop
+
+  workspace_min_width 32px
+  strip_workspace_name yes
+  
+  separator_symbol " | "
+  # top, right, bottom, left
+  padding 1px 16px 1px 0px
+  
+  colors {
+    background #1E1E1ED9
+    separator #FFFFFF
+  }
+}

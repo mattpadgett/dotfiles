@@ -1,0 +1,39 @@
+general {
+    interval = 1
+    colors = true
+    color_good = "#238823"
+    color_degraded = "#FFBF00"
+    color_bad = "#D2222D"
+}
+
+order += "ethernet _first_"
+order += "disk /"
+order += "disk /home"
+order += "cpu_usage all"
+order += "memory"
+order += "tztime local"
+
+ethernet _first_ {
+  format_up = "ip: %ip"
+  format_down = "ip: down"
+}
+
+tztime local {
+    format = "%m.%d.%Y %H:%M:%S"
+}
+
+memory {
+ format = "mem: %used / %available"
+}
+
+cpu_usage {
+    format = "cpu: %usage"
+}
+
+disk "/" {
+	format = "root: %used / %total"
+}
+
+disk "/home" {
+  format = "home: %used / %total"
+}

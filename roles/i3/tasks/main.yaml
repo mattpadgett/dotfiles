@@ -39,6 +39,11 @@
     path: "{{ ansible_user_dir }}/.config/i3"
     state: directory
 
+- name: create i3status config directory
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.config/i3status"
+    state: directory
+
 # copy files
 - name: copy xresources config
   ansible.builtin.template:
@@ -49,6 +54,11 @@
   ansible.builtin.template:
     dest: "{{ ansible_user_dir }}/.config/i3/config"
     src: "i3.config.j2"
+
+- name: copy i3status config
+  ansible.builtin.template:
+    dest: "{{ ansible_user_dir }}/.config/i3status/config"
+    src: "i3status.config.j2"
 
 - name: copy nitrogen config
   ansible.builtin.template:
