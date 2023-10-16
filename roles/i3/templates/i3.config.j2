@@ -3,6 +3,7 @@ set $mod Mod4
 new_window pixel 1
 new_float normal
 
+focus_follows_mouse no
 hide_edge_borders smart
 
 bindsym $mod+u border none
@@ -168,7 +169,6 @@ exec --no-startup-id VBoxClient-all
 for_window [class="JetBrains Toolbox"] floating enable
 for_window [class="firefox"] floating enable
 for_window [class="jetbrains-toolbox"] floating enable
-for_window [class="jetbrains-goland"] floating enable
 
 # Theme colors
 client.focused #56737a #1e1e20 #56737a #56737a #56737a
